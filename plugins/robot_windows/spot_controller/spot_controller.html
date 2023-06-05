@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='UTF-8'>
+  <link rel="icon" type="image/png" href="https://cyberbotics.com/assets/images/webots.png">
+
+  <style>
+    .instructions {
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <script type="module">
+    import RobotWindow from 'https://cyberbotics.com/wwi/R2023a/RobotWindow.js';
+
+    // Initialize the robot window
+    window.robotWindow = new RobotWindow();
+
+    // Function to send the message to the controller
+    function sendMessage(message) {
+      robotWindow.send(message);
+    }
+
+    // Attach event listener for keydown event
+    window.addEventListener('keydown', function(event) {
+      handleKeyPress(event.key);
+    });
+
+    // Function to handle key presses
+    function handleKeyPress(key) {
+      let linearX = 0;
+      let linearY = 0;
+      let angularZ = 0;
+
+      switch (key) {
+        case 'u':
+          linearX = 1;
+          linearY = 1;
+          break;
+        case 'i':
+          linearX = 1;
+          break;
+        case 'o':
+          linearX = 1;
+          linearY = -1;
+          break;
+        case 'j':
+          angularZ = 1;
+          break;
+        case 'l':
+          angularZ = -1;
+          break;
+        case 'm':
+          linearX = -1;
+          linearY = 1;
+          break;
+        case ',':
+          linearX = -1;
+          break;
+        case '.':
+          linearX = -1;
+          linearY = -1;
+          break;
+        default:
+          stopRobot();
+          return;
+      }
+
+      sendTwist(linearX, linearY, angularZ);
+    }
+
+    // Function to send Twist message
+    function sendTwist(linearX, linearY, angularZ) {
+      const twist = {
+        linear: {
+          x: linearX,
+          y: linearY,
+          z: 0
+        },
+        angular: {
+          x: 0,
+          y: 0,
+          z: angularZ
+        }
+      };
+      sendMessage(JSON.stringify(twist));
+    }
+
+    // Function to stop the robot
+    function stopRobot() {
+      sendTwist(0, 0, 0);
+    }
+  </script>
+</head>
+
+<body>
+  <div class="instructions">
+    <pre>
+      This node takes keypresses from the keyboard and publishes them as Twist messages.
+      It works best with a US keyboard layout.
+
+      Moving around:
+         u    i    o
+         j    k    l
+         m    ,    .
+
+      CTRL-C to quit
+
+      Press the appropriate keys to control the robot.
+    </pre>
+  </div>
+</body>
+
+</html>

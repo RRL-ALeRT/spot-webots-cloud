@@ -1,0 +1,23 @@
+Webots Project File version R2023a
+perspectives: 000000ff00000000fd0000000300000000000001ca0000039ffc0200000001fb00000012005300630065006e0065005400720065006501000000000000039f0000000000000000000000010000023a00000294fc0200000001fb0000001400540065007800740045006400690074006f00720000000013000002940000003f00ffffff00000003000004e300000039fc0100000002fb0000000e0043006f006e0073006f006c006501000001d0000005b00000000000000000fb0000001a0043006f006e0073006f006c00650041006c006c0041006c006c0100000000000004e30000006900ffffff000004e30000029400000004000000040000000100000008fc00000000
+simulationViewPerspectives: 000000ff000000010000000200000000000002a50100000002010000000101
+sceneTreePerspectives: 000000ff00000001000000030000001c000000c0000000000100000002010000000201
+maximizedDockId: -1
+centralWidgetVisible: 1
+orthographicViewHeight: 1
+textFiles: -1
+robotWindow: Spot
+consoles: Console:All:All
+renderingDevicePerspectives: Spot:gripper camera;1;0.242969;0;0
+renderingDevicePerspectives: Spot:kinect color;1;0.971875;0;0
+renderingDevicePerspectives: Spot:kinect range;1;0.971875;0;0
+renderingDevicePerspectives: Spot:left flank camera;1;0.287963;0;0
+renderingDevicePerspectives: Spot:left flank depth;1;0.733491;0;0
+renderingDevicePerspectives: Spot:left head camera;1;0.287963;0;0
+renderingDevicePerspectives: Spot:left head depth;1;0.733491;0;0
+renderingDevicePerspectives: Spot:rear camera;1;0.287963;0;0
+renderingDevicePerspectives: Spot:rear depth;1;0.733491;0;0
+renderingDevicePerspectives: Spot:right flank camera;1;0.287963;0;0
+renderingDevicePerspectives: Spot:right flank depth;1;0.733491;0;0
+renderingDevicePerspectives: Spot:right head camera;1;0.287963;0;0
+renderingDevicePerspectives: Spot:right head depth;1;0.733491;0;0
