@@ -1,4 +1,4 @@
-from scipy.spatial.transform import Rotation as R
+# from scipy.spatial.transform import Rotation as R
 import numpy as np
 import copy
 import json
@@ -15,14 +15,6 @@ motions = {
     'sit'  : [-0.20, -0.40, -0.19, 0.20, -0.40, -0.19, -0.40, -0.90, 1.18, 0.40, -0.90, 1.18],
     'lie'  : [-0.40, -0.99, 1.59, 0.40, -0.99, 1.59, -0.40, -0.99, 1.59, 0.40, -0.99, 1.59],
 }
-
-
-def quat_from_aa(aa):
-    return R.from_rotvec(aa[3] * np.array(aa[:3])).as_quat()
-
-
-def diff_quat(q2, q1):
-    return (R.from_quat(q2) * R.from_quat(q1).inv()).as_quat()
 
 
 def retract_arm(robot):
