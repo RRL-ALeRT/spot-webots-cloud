@@ -154,12 +154,12 @@ SolidBox {
     metalness 0
   }
 }
-Spot {
+DEF Spot Spot {
   translation 8.39 0.11 0.6
   rotation 0 0 1 -3.14159
   controller "spot_driver"
   window "spot_controller"
-  supervisor FALSE
+  supervisor TRUE
   frontExtension [
     SpotArm {
       translation 0 0 -0.094

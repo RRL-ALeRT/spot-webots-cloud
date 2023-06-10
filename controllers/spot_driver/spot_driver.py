@@ -6,7 +6,7 @@ import json
 from SpotKinematics import SpotModel
 from Bezier import BezierGait
 
-from controller import Robot#, Supervisor
+from controller import Supervisor #, Robot
 
 NUMBER_OF_JOINTS = 12
 
@@ -26,17 +26,17 @@ def retract_arm(robot):
 
 class SpotDriver:
     def __init__(self):
-        self.robot = Robot()
-        # self.supervisor = Supervisor()
+        # self.robot = Robot()
+        self.robot = Supervisor()
 
         retract_arm(self.robot)
 
-        # self.spot_node = self.supervisor.getFromDef("Spot")
+        self.spot_node = self.robot.getFromDef("Spot")
 
-        # self.spot_translation = self.spot_node.getField('translation')
-        # self.spot_translation_initial = self.spot_translation.getSFVec3f()
-        # self.spot_rotation = self.spot_node.getField('rotation')
-        # self.spot_rotation_initial = self.spot_rotation.getSFRotation()
+        self.spot_translation = self.spot_node.getField('translation')
+        self.spot_translation_initial = self.spot_translation.getSFVec3f()
+        self.spot_rotation = self.spot_node.getField('rotation')
+        self.spot_rotation_initial = self.spot_rotation.getSFRotation()
 
         self.timestep = 32
 
@@ -180,10 +180,10 @@ class SpotDriver:
         self.allow_new_target = False
         self.gripper_close = False
 
-    # def model_cb(self):
-    #     spot_rot = self.spot_node.getField("rotation")
-    #     spot_rot_val = spot_rot.getSFRotation()
-    #     self.yaw_inst = spot_rot_val[2]
+    def model_cb(self):
+        spot_rot = self.spot_node.getField("rotation")
+        spot_rot_val = spot_rot.getSFRotation()
+        self.yaw_inst = spot_rot_val[2]
 
     def yaw_control(self):
         """ Yaw body controller"""
@@ -538,4 +538,4 @@ while spot.robot.step(spot.timestep) != -1:
             motor.setPosition([0.045, 0.045][idx])
 
     #Update Spot state
-    # spot.model_cb()
+    spot.model_cb()
