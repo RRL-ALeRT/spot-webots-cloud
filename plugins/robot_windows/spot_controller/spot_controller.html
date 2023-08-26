@@ -32,38 +32,38 @@
 
     // Function to handle key presses
     function handleKeyPress(key) {
-      let linearX = 0;
-      let linearY = 0;
-      let angularZ = 0;
+      let linearX = 0.0;
+      let linearY = 0.0;
+      let angularZ = 0.0;
 
       switch (key) {
         case 'u':
-          linearX = 1;
-          linearY = 1;
+          linearX = 0.5;
+          linearY = 0.5;
           break;
         case 'i':
-          linearX = 1;
+          linearX = 0.5;
           break;
         case 'o':
-          linearX = 1;
-          linearY = -1;
+          linearX = 0.5;
+          linearY = -0.5;
           break;
         case 'j':
-          angularZ = 1;
+          angularZ = 0.5;
           break;
         case 'l':
-          angularZ = -1;
+          angularZ = -0.5;
           break;
         case 'm':
-          linearX = -1;
-          linearY = 1;
+          linearX = -0.5;
+          linearY = 0.5;
           break;
         case ',':
-          linearX = -1;
+          linearX = -0.5;
           break;
         case '.':
-          linearX = -1;
-          linearY = -1;
+          linearX = -0.5;
+          linearY = -0.5;
           break;
         default:
           stopRobot();
@@ -79,11 +79,11 @@
         linear: {
           x: linearX,
           y: linearY,
-          z: 0
+          z: 0.0
         },
         angular: {
-          x: 0,
-          y: 0,
+          x: 0.0,
+          y: 0.0,
           z: angularZ
         }
       };
@@ -92,7 +92,7 @@
 
     // Function to stop the robot
     function stopRobot() {
-      sendTwist(0, 0, 0);
+      sendTwist(0.0, 0.0, 0.0);
     }
   </script>
 </head>

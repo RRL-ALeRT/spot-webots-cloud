@@ -123,7 +123,6 @@ class SpotDriver:
         self.T_bf0 = self.spot.WorldToFoot
         self.T_bf = copy.deepcopy(self.T_bf0)
         self.bzg = BezierGait(dt=0.032)
-        self.motors_initial_pos = []
 
         # ------------------ Inputs for Bezier Gait control ----------------
         self.xd = 0.0
@@ -201,13 +200,13 @@ class SpotDriver:
         # Override motion command
         self.fixed_motion = False
 
-        StepLength = 0.05
-        ClearanceHeight = 0.01
+        StepLength = 0.15
+        ClearanceHeight = 0.015
         PenetrationDepth = 0.003
-        SwingPeriod = 0.4
+        SwingPeriod = 0.3
         YawControl = 0.0
         YawControlOn = 0.0
-        StepVelocity = 0.2
+        StepVelocity = 0.8
 
         self.xd = 0.
         self.yd = 0.
@@ -247,10 +246,16 @@ class SpotDriver:
         self.YawControlOn = YawControlOn
 
     def __talker(self, motors_target_pos):
+        motor_offsets = [0, 0.52, -1.182]
         for idx, motor in enumerate(self.motors):
-            motor.setPosition(motors_target_pos[idx] - self.motors_initial_pos[idx])
+            motor.setPosition(motor_offsets[idx % 3] + motors_target_pos[idx])
 
     def spot_inverse_control(self):
+        self.front_left_lower_leg_contact = self.touch_fl.getValue()
+        self.front_right_lower_leg_contact = self.touch_fr.getValue()
+        self.rear_left_lower_leg_contact = self.touch_rl.getValue()
+        self.rear_right_lower_leg_contact = self.touch_rr.getValue()
+
         pos = np.array([self.xd, self.yd, self.zd])
         orn = np.array([self.rolld, self.pitchd, self.yawd])
 
@@ -279,9 +284,6 @@ class SpotDriver:
             joint_angles[2][0], joint_angles[2][1], joint_angles[2][2],
             joint_angles[3][0], joint_angles[3][1], joint_angles[3][2],
             ]
-
-        if not self.motors_initial_pos:
-            self.motors_initial_pos = target
 
         self.__talker(target)
 
@@ -474,41 +476,6 @@ class SpotDriver:
         result = FollowJointTrajectory.Result()
         return result
 
-    def callback_front_left_lower_leg_contact(self, data):
-        if data == 0:
-            self.chattering_front_left_lower_leg_contact += 1
-            if self.chattering_front_left_lower_leg_contact > self.lim_chattering:
-                self.front_left_lower_leg_contact = 0
-        else:
-            self.front_left_lower_leg_contact = 1
-            self.chattering_front_left_lower_leg_contact = 0
-
-    def callback_front_right_lower_leg_contact(self, data):
-        if data == 0:
-            self.chattering_front_right_lower_leg_contact += 1
-            if self.chattering_front_right_lower_leg_contact > self.lim_chattering:
-                self.front_right_lower_leg_contact = 0
-        else:
-            self.front_right_lower_leg_contact = 1
-            self.chattering_front_right_lower_leg_contact = 0
-
-    def callback_rear_left_lower_leg_contact(self, data):
-        if data == 0:
-            self.chattering_rear_left_lower_leg_contact += 1
-            if self.chattering_rear_left_lower_leg_contact > self.lim_chattering:
-                self.rear_left_lower_leg_contact = 0
-        else:
-            self.rear_left_lower_leg_contact = 1
-            self.chattering_rear_left_lower_leg_contact = 0
-
-    def callback_rear_right_lower_leg_contact(self, data):
-        if data == 0:
-            self.chattering_rear_right_lower_leg_contact += 1
-            if self.chattering_rear_right_lower_leg_contact > self.lim_chattering:
-                self.rear_right_lower_leg_contact = 0
-        else:
-            self.rear_right_lower_leg_contact = 1
-            self.chattering_rear_right_lower_leg_contact = 0
 
 spot = SpotDriver()
 
@@ -519,11 +486,6 @@ while spot.robot.step(spot.timestep) != -1:
         if ":" in message:
             cmd_vel = json.loads(message)
             spot.cmd_vel(cmd_vel)
-
-    spot.callback_front_left_lower_leg_contact(bool(spot.touch_fl.getValue()))
-    spot.callback_front_right_lower_leg_contact(bool(spot.touch_fr.getValue()))
-    spot.callback_rear_left_lower_leg_contact(bool(spot.touch_rl.getValue()))
-    spot.callback_rear_right_lower_leg_contact(bool(spot.touch_rr.getValue()))
 
     if spot.fixed_motion:
         spot.defined_motions()
